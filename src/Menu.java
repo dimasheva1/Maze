@@ -18,12 +18,13 @@ public class Menu extends JFrame implements ActionListener{
 	private Game game;
 	private JPanel MainPanel;
 	public final static Dimension ScreenSize= Toolkit.getDefaultToolkit ().getScreenSize ();
-    static PodMenu podmenu;
+    private static PodMenu podmenu;
 
 	
 	
 	public Menu()
 	{
+		
 		play = new JButton("Play");
 		exit = new JButton("Exit ");
 		contin = new JButton("Continue");
@@ -135,7 +136,7 @@ public class Menu extends JFrame implements ActionListener{
 		}
 		if (e.getActionCommand()=="Back")
 		{
-			podmenu.setVisible(false);
+			if (podmenu!=null) podmenu.setVisible(false);
 			this.setVisible(true);
 			this.setSize(290,350);
 			this.setResizable(false);
@@ -162,6 +163,7 @@ public class Menu extends JFrame implements ActionListener{
 			game.setVisible(true);
 			game.setResizable(false);
 			this.setVisible(false);
+			this.dispose();
 		}
 		
 	}
@@ -169,6 +171,11 @@ public class Menu extends JFrame implements ActionListener{
 	public static PodMenu getPodMenu()
 	{
 		return podmenu;
+	}
+	
+	public static void setPodMenu(PodMenu pm)
+	{
+		podmenu = pm;
 	}
 	
 

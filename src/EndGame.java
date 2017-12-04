@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 public class EndGame extends JFrame implements ActionListener{
 	private JLabel win,choose;
 	private JButton nextLevel,backToMenu;
-	static PodMenu podmenu;
-	static Menu menu;
+	private static PodMenu podmenu;
+	private static Menu menu;
 	
 	public EndGame()
 	{
@@ -36,8 +36,12 @@ public class EndGame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) 
 	{
 		if (e.getActionCommand()=="Go next level")
-		{
-			podmenu = Menu.getPodMenu();
+		{  
+			if (menu.getPodMenu()!=null) podmenu = Menu.getPodMenu();
+			else {
+				menu.setPodMenu(new PodMenu());
+				podmenu=menu.getPodMenu();
+			}
 		    podmenu.setSize(200, 300);
 		    podmenu.setVisible(true);
 		    podmenu.setDefaultCloseOperation(EXIT_ON_CLOSE);
