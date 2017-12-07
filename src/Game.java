@@ -20,8 +20,11 @@ public class Game extends JFrame implements KeyListener{
 		public static File wall = new File("wall.txt");
 	    public static File path = new File("path.txt");
 		Thread player = new Thread(new Runnable()
-	     {public void run()
-	     {movePlayer();}
+	     {
+			public void run()
+			{
+				movePlayer();
+			}
 	     });
 		
 		Thread checkPlayMusic = new Thread(new Runnable()
@@ -50,6 +53,7 @@ public class Game extends JFrame implements KeyListener{
 		
 		public Game(int size)
 		{
+			sound.setVolume((float) 0.7);
 			sound.play();
 			checkPlayMusic.start();
 			mappanel = new MapPanel(size);
@@ -60,6 +64,7 @@ public class Game extends JFrame implements KeyListener{
 		
 		public Game(File wall,File path)
 		{
+			sound.setVolume((float) 0.7);
 			sound.play();
 			checkPlayMusic.start();
 			mappanel=new MapPanel(wall,path);

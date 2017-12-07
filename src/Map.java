@@ -178,6 +178,23 @@ public class Map{
 		return p;
 	}
 	
+	public void paintMap(Graphics g)
+	{		
+			for(int i =0;i<list.length;i++)
+				for (int j=0;j<list[0].length;j++)
+				{
+					g.drawImage(list[i][j].getImg(),list[i][j].getPosX()*cellSize , list[i][j].getPosY()*cellSize, 16, 16, null);
+				}
+			g.drawImage(new ImageIcon("img/finish.png").getImage(), (findOutput())*cellSize, (list.length-1)*cellSize, null);
+			g.drawImage(new ImageIcon("img/start.png").getImage(), (findInput()+1)*cellSize, 0, null);
+			
+			g.drawImage(p.getImg(),p.getPosX(),p.getPosY(),16,16,null);
+	}
+		
+		
+
+	
+	
 	
 	
 	}
