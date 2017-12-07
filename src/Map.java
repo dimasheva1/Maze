@@ -34,14 +34,14 @@ public class Map extends JPanel{
 		MapMaker mm = new MapMaker(size,size);
 		mm.makeMaze();
 		list = mm.getMaze();
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("player.png"));
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"));
 	
 	}
 	
 	public Map(File wall,File path)
 	{
 		readFile(wall,path);
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("player.png"));
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"));
 	}
 	
 	
@@ -54,8 +54,8 @@ public class Map extends JPanel{
 			{
 				g.drawImage(list[i][j].getImg(),list[i][j].getPosX()*cellSize , list[i][j].getPosY()*cellSize, 16, 16, this);
 			}
-		g.drawImage(new ImageIcon("finish.png").getImage(), (findOutput())*cellSize, (list.length-1)*cellSize, this);
-		g.drawImage(new ImageIcon("start.png").getImage(), (findInput()+1)*cellSize, 0, this);
+		g.drawImage(new ImageIcon("img/finish.png").getImage(), (findOutput())*cellSize, (list.length-1)*cellSize, this);
+		g.drawImage(new ImageIcon("img/start.png").getImage(), (findInput()+1)*cellSize, 0, this);
 		
 		paintPlayer(g);
 	}

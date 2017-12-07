@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Menu extends JFrame implements ActionListener{
-	private JButton play,exit,contin;
+	private JButton play,exit,contin,about;
 	private Game game;
 	private JPanel MainPanel;
 	public final static Dimension ScreenSize= Toolkit.getDefaultToolkit ().getScreenSize ();
@@ -25,9 +25,10 @@ public class Menu extends JFrame implements ActionListener{
 	public Menu()
 	{
 		
-		play = new JButton("Play");
-		exit = new JButton("Exit ");
-		contin = new JButton("Continue");
+		play = new JButton("Play",new ImageIcon("img/play.png"));
+		exit = new JButton("Exit ",new ImageIcon("img/exit.png"));
+		contin = new JButton("Continue",new ImageIcon("img/continue.png"));
+		about = new JButton("About",new ImageIcon("img/about.png"));
 		MainPanel= new JPanel();
 		
 		play.addActionListener(this);
@@ -37,10 +38,11 @@ public class Menu extends JFrame implements ActionListener{
 		play.setAlignmentX(Component.CENTER_ALIGNMENT);
 		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		contin.setAlignmentX(Component.CENTER_ALIGNMENT);
+		about.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		setLayout(new FlowLayout());
 		
-		JLabel picture = new JLabel("",new ImageIcon("images.jpg"),JLabel.CENTER);
+		JLabel picture = new JLabel("",new ImageIcon("img/logo.png"),JLabel.CENTER);
 		
 		
 		MainPanel.setLayout(new BoxLayout(MainPanel, BoxLayout.Y_AXIS));
@@ -48,6 +50,7 @@ public class Menu extends JFrame implements ActionListener{
 		//JLabel a= new JLabel(" ");
 		//MainPanel.add(a);
 		MainPanel.add(contin);
+		MainPanel.add(about);
 		//MainPanel.add(a);
 		MainPanel.add(exit);
 		
@@ -82,7 +85,7 @@ public class Menu extends JFrame implements ActionListener{
 	public static void main(String args[])
 	{
 		Menu menu = new Menu();
-		menu.setSize(290,350);
+		menu.setSize(250,370);
 		menu.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		menu.setResizable(false);
 		menu.setVisible(true);
@@ -102,8 +105,9 @@ public class Menu extends JFrame implements ActionListener{
 			game.setVisible(true);
 			game.setResizable(false);*/
 		    podmenu = new PodMenu();
-		    podmenu.setSize(200, 300);
+		    podmenu.setSize(200, 230);
 		    podmenu.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		    podmenu.setResizable(false);
 		    podmenu.setVisible(true);
 		    podmenu.setLocation((ScreenSize.width-podmenu.getWidth())/2, (ScreenSize.height-podmenu.getHeight())/2);
 		    this.setVisible(false);
@@ -138,7 +142,7 @@ public class Menu extends JFrame implements ActionListener{
 		{
 			if (podmenu!=null) podmenu.setVisible(false);
 			this.setVisible(true);
-			this.setSize(290,350);
+			this.setSize(250,370);
 			this.setResizable(false);
 			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			this.setLocation((ScreenSize.width-getWidth())/2, (ScreenSize.height-getHeight())/2);
@@ -170,7 +174,8 @@ public class Menu extends JFrame implements ActionListener{
 	
 	public static PodMenu getPodMenu()
 	{
-		return podmenu;
+		if (podmenu==null) return null;
+		else return podmenu;
 	}
 	
 	public static void setPodMenu(PodMenu pm)

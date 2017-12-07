@@ -1,8 +1,11 @@
 
 import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,18 +13,19 @@ import javax.swing.JPanel;
 
 public class PodMenu extends JFrame{
 	private JButton easy,hard,back,medium;
-	private JPanel ChoosePanel;
+	private JPanel ChoosePanel,panel;
 	private JLabel choose;
 	private static  Menu menu = new Menu();
 	
 	public PodMenu()
 	{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		ChoosePanel=new JPanel(new GridLayout(4,1));
+		ChoosePanel=new JPanel();
+		panel=new JPanel();
 		
-		easy = new JButton("Easy");
-		medium = new JButton("Medium");
-		hard = new JButton("Hard");
+		easy = new JButton("Easy",new ImageIcon("img/easy.png"));
+		medium = new JButton("Medium",new ImageIcon("img/medium.png"));
+		hard = new JButton("Hard",new ImageIcon("img/hard.png"));
 		back = new JButton("Back");
 		
 		easy.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -30,9 +34,11 @@ public class PodMenu extends JFrame{
 		medium.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		choose=new JLabel("Choose complexity:");
+		choose.setFont(new Font("Dialog", Font.ITALIC, 20));
 		choose.setHorizontalAlignment(getWidth()/2);
+		panel.add(choose);
 		
-		setLayout(new GridLayout(2,1));
+		setLayout(new FlowLayout());
 		
 		ChoosePanel.setLayout(new BoxLayout(ChoosePanel, BoxLayout.Y_AXIS));
 		
@@ -42,7 +48,7 @@ public class PodMenu extends JFrame{
 		ChoosePanel.add(hard);
 		ChoosePanel.add(back);
 		
-		add(choose);
+		add(panel);
 		add(ChoosePanel);
 		
 		easy.addActionListener(menu);

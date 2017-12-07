@@ -37,12 +37,13 @@ public class EndGame extends JFrame implements ActionListener{
 	{
 		if (e.getActionCommand()=="Go next level")
 		{  
-			if (menu.getPodMenu()!=null) podmenu = Menu.getPodMenu();
+			if (menu.getPodMenu()!=null) podmenu = menu.getPodMenu();
 			else {
 				menu.setPodMenu(new PodMenu());
 				podmenu=menu.getPodMenu();
 			}
-		    podmenu.setSize(200, 300);
+		    podmenu.setSize(200, 230);
+		    podmenu.setResizable(false);
 		    podmenu.setVisible(true);
 		    podmenu.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		    podmenu.setLocation((Menu.ScreenSize.width-podmenu.getWidth())/2, (Menu.ScreenSize.height-podmenu.getHeight())/2);
@@ -52,7 +53,7 @@ public class EndGame extends JFrame implements ActionListener{
 		if (e.getActionCommand()=="Back to menu")
 		{
 			menu = new Menu();
-			menu.setSize(290,350);
+			menu.setSize(250,370);
 			menu.setResizable(false);
 			menu.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			menu.setLocation((Menu.ScreenSize.width-menu.getWidth())/2, (Menu.ScreenSize.height-menu.getHeight())/2);
