@@ -9,12 +9,14 @@ import javax.swing.JFrame;
 
 
 public class Game extends JFrame implements KeyListener{
-		private static Map map;
+		//private Map map;
+	    private MapPanel mappanel;
 		private volatile int k=0;// 1 - Right; 2 - Left; 3 - Up; 4 - Down
 		private boolean working=false;
 		private boolean released=true;
 		private boolean first=false;
-		private Sound sound,sound1;	
+		private Sound sound = new Sound(new File("1.wav"));
+		private Sound sound1 = new Sound(new File("2.wav"));	
 		public static File wall = new File("wall.txt");
 	    public static File path = new File("path.txt");
 		Thread player = new Thread(new Runnable()
@@ -48,23 +50,20 @@ public class Game extends JFrame implements KeyListener{
 		
 		public Game(int size)
 		{
-			sound = new Sound(new File("1.wav"));
 			sound.play();
-			sound1= new Sound(new File("2.wav"));
 			checkPlayMusic.start();
-			map = new Map(size);
-			add(map);
+			mappanel = new MapPanel(size);
+			add(mappanel);
 			addKeyListener(this);
 			player.start();
 		}
 		
 		public Game(File wall,File path)
 		{
-			sound = new Sound(new File("1.wav"));
 			sound.play();
 			checkPlayMusic.start();
-			map=new Map(wall,path);
-			add(map);
+			mappanel=new MapPanel(wall,path);
+			add(mappanel);
 			addKeyListener(this);
 			player.start();	
 		}
@@ -98,17 +97,17 @@ public class Game extends JFrame implements KeyListener{
 				working = true;
 				try
 				{
-				if (map.ifCan(k))
+				if (mappanel.getMap().ifCan(k))
 				
 						
 			  for (int i = 1;i<9;i++)		
 					{
-				  if      (k==1) map.goRight();
-				  else if (k==2) map.goLeft();
-				  else if (k==4) map.goDown();
-				  else if (k==3) map.goUp();
+				  if      (k==1) mappanel.getMap().goRight();
+				  else if (k==2) mappanel.getMap().goLeft();
+				  else if (k==4) mappanel.getMap().goDown();
+				  else if (k==3) mappanel.getMap().goUp();
 					
-					map.repaint();
+					mappanel.repaint();
 					try {
 						Thread.sleep(18);
 						
@@ -118,7 +117,7 @@ public class Game extends JFrame implements KeyListener{
 				
 				}
 				catch (ArrayIndexOutOfBoundsException e) {} 
-				if (map.checkFinish())
+				if (mappanel.getMap().checkFinish())
 				{
 					sound.stop();
 					sound1.stop();
@@ -143,7 +142,7 @@ public class Game extends JFrame implements KeyListener{
 		
 		public Dimension getSize()
 		{
-			return map.getSize();
+			return mappanel.getSize();
 		}
    
 		
@@ -195,7 +194,7 @@ public class Game extends JFrame implements KeyListener{
 				}
 				if (ke.getKeyCode()==KeyEvent.VK_ESCAPE)
 				{
-					map.writefile(wall, path);
+					mappanel.getMap().writefile(wall, path);
 					sound.stop();
 					sound1.stop();
 					Menu menu = new Menu();

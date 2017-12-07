@@ -17,8 +17,8 @@ import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Map extends JPanel{
-	private static final  int cellSize=16;
+public class Map{
+	protected static final  int cellSize=16;
 	private Cell [][] list;
 	public Cell p ;
 	//int count;
@@ -46,25 +46,7 @@ public class Map extends JPanel{
 	
 	
 	
-	public void paintComponent(Graphics g)
-	{
-		
-		for(int i =0;i<list.length;i++)
-			for (int j=0;j<list[0].length;j++)
-			{
-				g.drawImage(list[i][j].getImg(),list[i][j].getPosX()*cellSize , list[i][j].getPosY()*cellSize, 16, 16, this);
-			}
-		g.drawImage(new ImageIcon("img/finish.png").getImage(), (findOutput())*cellSize, (list.length-1)*cellSize, this);
-		g.drawImage(new ImageIcon("img/start.png").getImage(), (findInput()+1)*cellSize, 0, this);
-		
-		paintPlayer(g);
-	}
 	
-	
-	public void paintPlayer(Graphics g)
-	{
-		g.drawImage(p.getImg(),p.getPosX(),p.getPosY(),16,16,this);
-	}
 	
 	
 	public void goRight() 
@@ -115,15 +97,7 @@ public class Map extends JPanel{
 		else return false;
 		
 	}
-	
-	public Cell[][] getMap()
-	{
-		return list;
-	}
-
-	
-	
-	
+		
 	public int findInput()
     {
     	for (int i =0;i<list.length;i++)
@@ -192,6 +166,16 @@ public class Map extends JPanel{
 		in.close();
 		in1.close();
 		} catch (FileNotFoundException e) {}
+	}
+	
+	public Cell[][] getList()
+	{
+		return list;
+	}
+	
+	public Cell getPlayer()
+	{
+		return p;
 	}
 	
 	
