@@ -9,13 +9,15 @@ private int posX;
 private int posY;
 private transient Image img;
 private boolean goTo;
+private char flag;
 
-public Cell(int posX,int posY,boolean goTo,ImageIcon img)
+public Cell(int posX,int posY,boolean goTo,ImageIcon img,char flag)
 {
 	this.setPosX(posX);
 	this.setPosY(posY);
 	this.setGoTo(goTo);
 	this.setImg(img.getImage());
+	this.setFlag(flag);
 	
 }
 
@@ -58,6 +60,14 @@ public Image getImg() {
 
 public void setImg(Image img) {
 	this.img = img;
+}
+
+public char getFlag() {
+	return flag;
+}
+
+public void setFlag(char flag) {
+	this.flag = flag;
 }
 	
 	

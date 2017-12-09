@@ -47,39 +47,12 @@ public class Menu extends JFrame implements ActionListener{
 		
 		MainPanel.setLayout(new BoxLayout(MainPanel, BoxLayout.Y_AXIS));
 		MainPanel.add(play);
-		//JLabel a= new JLabel(" ");
-		//MainPanel.add(a);
 		MainPanel.add(contin);
 		MainPanel.add(about);
-		//MainPanel.add(a);
 		MainPanel.add(exit);
 		
 		add(picture);
 		add(MainPanel);
-		
-		//MainPanel.setVisible(true);
-		/*ChoosePanel=new JPanel(new GridLayout(4,1));
-		easy = new JButton("Easy");
-		hard = new JButton("Hard");
-		back = new JButton("Back");
-		choose=new JLabel("Choose complexity:");
-		choose.setHorizontalAlignment(getWidth()/2);
-		panel3 = new JPanel();
-		panel4 = new JPanel();
-		panel5 = new JPanel();
-		panel3.add(easy);
-		panel4.add(hard);
-		panel5.add(back);
-		ChoosePanel.add(choose);
-		ChoosePanel.add(panel3);
-		ChoosePanel.add(panel4);
-		ChoosePanel.add(panel5);
-		add(ChoosePanel,BorderLayout.CENTER);
-		//ChoosePanel.setVisible(false);*/
-		
-		
-		
-		
 	}
 	
 	public static void main(String args[])
@@ -99,11 +72,6 @@ public class Menu extends JFrame implements ActionListener{
 	{
 		if (e.getActionCommand()=="Play")
 		{
-			/*game = new Game();
-			game.setSize(game.getSize());
-			game.setLocation((ScreenSize.width-game.getWidth())/2, (ScreenSize.height-game.getHeight())/2);
-			game.setVisible(true);
-			game.setResizable(false);*/
 		    podmenu = new PodMenu();
 		    podmenu.setSize(200, 230);
 		    podmenu.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -132,7 +100,7 @@ public class Menu extends JFrame implements ActionListener{
 		{
 			game = new Game(20);
 			game.setSize(game.getSize());
-			game.setLocation((ScreenSize.width-game.getWidth())/2, (ScreenSize.height-game.getHeight())/2);
+			game.setLocation((ScreenSize.width-game.getWidth())/2, 15);
 			game.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			game.setVisible(true);
 			game.setResizable(false);

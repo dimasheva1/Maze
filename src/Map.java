@@ -20,7 +20,11 @@ import javax.swing.JPanel;
 public class Map{
 	protected static final  int cellSize=16;
 	private Cell [][] list;
-	public Cell p ;
+	private volatile Cell p ;
+	String str;
+	Solver solve;
+	int k=0;
+	int size;
 	//int count;
 	//private static Image wall = new ImageIcon("bricks.png").getImage();
 	//private static Image path = new ImageIcon("planks.png").getImage();
@@ -34,14 +38,18 @@ public class Map{
 		MapMaker mm = new MapMaker(size,size);
 		mm.makeMaze();
 		list = mm.getMaze();
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"));
+		solve= new Solver(list);
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"),' ');
+		
+		
 	
 	}
 	
 	public Map(File wall,File path)
 	{
 		readFile(wall,path);
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"));
+		solve= new Solver(list);
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"),' ');
 	}
 	
 	
@@ -88,7 +96,7 @@ public class Map{
 	
 	public Dimension getSize()
 	{
-		return (new Dimension((list.length)*cellSize+6,(list[0].length+1)*cellSize+13));
+		return (new Dimension((list.length)*cellSize+6,(list[0].length+1)*cellSize+13+27));
 	}
 	
 	public boolean checkFinish()
@@ -112,7 +120,7 @@ public class Map{
     	return 0;
     }
 	
-	public void writefile(File wall,File path)
+	public void writeFile(File wall,File path)
 	{
 		try(FileWriter w = new FileWriter(wall,false);
 			FileWriter w1 = new FileWriter(path,false);)
@@ -149,7 +157,7 @@ public class Map{
 		try {
 		in = new Scanner(wall);
 		in1 = new Scanner(path);
-		int size = in.nextInt();
+		size = in.nextInt();
 		list = new Cell [size][size];
 		while(in.hasNext())
 		{
@@ -192,10 +200,82 @@ public class Map{
 	}
 		
 		
-
+    public int getKolCell()
+    {
+    	solve.solveMaze();
+    	return solve.getKolCell();
+    }
 	
+    
+    public boolean movePlayer(boolean released, MapPanel mappanel)
+	{
+    	synchronized(Thread.currentThread())
+		  {
+		  try {
+			  if (released) Thread.currentThread().wait();	
+			} catch (InterruptedException e) {}
+		  }
+		
+			Game.setWorking(true);
+			try
+			{
+			if (ifCan(k))
+			
+					
+		  for (int i = 1;i<9;i++)		
+				{
+			  if      (k==1) goRight();
+			  else if (k==2) goLeft();
+			  else if (k==4) goDown();
+			  else if (k==3) goUp();	
+				mappanel.repaint();
+				try {
+					Thread.sleep(18);
+				} catch (InterruptedException e) {}
+				
+				}
+			synchronized(Thread.currentThread())
+			{
+			if (Game.getExit()) 
+				{try {
+					Thread.currentThread().wait();
+			     	} catch (InterruptedException e) {}
+				}
+			}
+			
+			}
+			catch (ArrayIndexOutOfBoundsException e) {} 
+			if (checkFinish()) return false;
+		  Game.setWorking(false);
+		  return true;
+		  
+		}
+    
+    public void setK(int k)
+    {
+    	this.k=k;
+    }
+		
+		
 	
+    
+    public  void notifyPlayer()
+    {
+    	synchronized(Thread.currentThread())
+    	{
+    	Thread.currentThread().notify();}
+    }
+    
+    public void playerOnStart()
+    {
+    	p.setPosX(findInput()*cellSize);
+    	p.setPosY(0);
+    }
 	
+    public int getSizeMap()//число передаваемое в мапмейкер
+	{
+		return size;
+	}
 	
 	}
  		
