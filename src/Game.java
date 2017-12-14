@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 	import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Timer;
 
 import javax.swing.BoxLayout;
@@ -21,14 +22,14 @@ public class Game extends JFrame implements KeyListener{
 	    private MapPanel mappanel;
 	    private TimerLabel timerLabel;
 	    private int time;
-		private volatile static boolean working;
-		//private boolean ifLosed=false;
+		private volatile static boolean working;	
 		private boolean released=true;
 		private boolean first=false;// для потока музыки
-		private static volatile boolean exit;
+		private volatile boolean exit;
 		private boolean firstcheck;//для первого старта
-		private static Sound sound = new Sound(new File("1.wav"));
-		private static Sound sound1 = new Sound(new File("2.wav"));	
+		
+		private  Sound sound = new Sound(getClass().getResourceAsStream("1.wav"));
+		private  Sound sound1 = new Sound(getClass().getResourceAsStream("2.wav"));	
 		public static File wall = new File("wall.txt");
 	    public static File path = new File("path.txt");
 	    public static File wall1 = new File("wall1.txt");
@@ -38,6 +39,15 @@ public class Game extends JFrame implements KeyListener{
 			public void run()
 			{
 				while(true)
+				{
+					synchronized(Thread.currentThread())
+					{
+					if (exit) 
+						{try {
+							Thread.currentThread().wait();
+					     	} catch (InterruptedException e) {}
+						}
+					}
 				if (!mappanel.movePlayer(released))
 				{
 					sound.stop();
@@ -52,7 +62,7 @@ public class Game extends JFrame implements KeyListener{
 					pause();
 					
 				}
-			}
+			}}
 	    }); 
 		
 		
@@ -66,19 +76,21 @@ public class Game extends JFrame implements KeyListener{
 			    	     try 
 			    	     {
 			    	    	 Thread.sleep(time1);
-						    /*if(exit)					// Случай включения музыки после выхода
+			    	    	 synchronized(Thread.currentThread())
+			    	    	 {
+						    if(exit)					// Случай включения музыки после выхода
 					    	   { 
-					    		   pause();
-					    		   Thread.sleep(40000);
+						          Thread.currentThread().wait();
 					    	   }
-					     } catch (InterruptedException e) {} */
+			    	    	 }
+					     } catch (InterruptedException e) {} 
 			    	   if (!first) 
 			    		{
 			    		 sound.stop();
 			    		 time1 = 33000;
 			    		 first=true;
 			    		}
-			    	   
+			    	     
 			    	  sound1.setVolume(sound.getVolume());
 			    	  sound1.play();
 			    	   }  	  
@@ -114,7 +126,7 @@ public class Game extends JFrame implements KeyListener{
 			timerLabel=new TimerLabel(new Timer(),time);
 			
 			timerLabel.setFont(new Font(timerLabel.getFont().getFontName(), timerLabel.getFont().getStyle(), 20));
-			timerLabel.setText("Осталось время - " + String.format("%02d:%02d", time/100, time%100));
+			timerLabel.setText("Осталось времени - " + String.format("%02d:%02d", time/100, time%100));
 				
 			JPanel panel1 = new JPanel();
 			panel1.setBackground(Color.LIGHT_GRAY);
@@ -122,7 +134,7 @@ public class Game extends JFrame implements KeyListener{
 			panel1.add(mappanel);
 			panel1.add(timerLabel);
 			
-			
+			System.out.println("12");
 			add(panel1);
 			addKeyListener(this);
 			
@@ -138,16 +150,29 @@ public class Game extends JFrame implements KeyListener{
 			exit=false;
 			firstcheck=false;
 			sound.setVolume((float) 0.7);
+			
 			sound.play();
 			checkPlayMusic.start();
 			mappanel=new MapPanel(wall,path);
-			if (mappanel.getSizeMap()==21) time = mappanel.getKolCell()*22;
-			else if(mappanel.getSizeMap()==31) time = mappanel.getKolCell()*25;
-			else if (mappanel.getSizeMap()==41) time = mappanel.getKolCell()*28;
+			if (mappanel.getSizeMap()==21)
+				{
+				time = mappanel.getKolCell()*22;
+				setLocation((Menu.ScreenSize.width-getSize().width)/2, (Menu.ScreenSize.height-getSize().height)/2);
+				}
+			else if(mappanel.getSizeMap()==31)
+				{
+				time = mappanel.getKolCell()*25;
+				setLocation((Menu.ScreenSize.width-getSize().width)/2, (Menu.ScreenSize.height-getSize().height)/2);
+				}
+			else if (mappanel.getSizeMap()==41)
+				{
+				time = mappanel.getKolCell()*28;
+				setLocation((Menu.ScreenSize.width-getSize().width)/2, 15);
+				}
 			timerLabel=new TimerLabel(new Timer(),time);
 			
 			timerLabel.setFont(new Font(timerLabel.getFont().getFontName(), timerLabel.getFont().getStyle(), 20));
-			timerLabel.setText("Осталось время - " + String.format("%02d:%02d", time/100, time%100));
+			timerLabel.setText("Осталось времени - " + String.format("%02d:%02d", time/100, time%100));
 				
 			JPanel panel1 = new JPanel();
 			panel1.setBackground(Color.LIGHT_GRAY);
@@ -159,21 +184,11 @@ public class Game extends JFrame implements KeyListener{
 			add(panel1);
 			addKeyListener(this);
 			
+			
 			player.start();
 		}
 		
 		
-			
-		
-		public static void main(String [] args)
-		{
-			Game a = new Game(10);
-			a.setSize(22*16, 23*16+35);
-			a.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			a.setVisible(true);
-			
-			
-		}
 		
 		
 		public Dimension getSize()
@@ -199,12 +214,7 @@ public class Game extends JFrame implements KeyListener{
 				}
 				if (ke.getKeyCode()==KeyEvent.VK_DOWN)
 				{
-					//if (ifLosed)
-					//{
-					//player.start();
-					//mappanel.repaint();
-					//ifLosed=false;
-					//}
+					System.out.println("11");
 					if (!firstcheck)
 					{	
 					checkLose.start();
@@ -290,68 +300,6 @@ public class Game extends JFrame implements KeyListener{
 			working=w;
 		}
 		
-		/*public void prepareToStart()
-		{
-			exit=false;
-			working=false;
-			released=true;
-			firstcheck=false;
-			player = new Thread(new Runnable()
-		    {
-				public void run()
-				{
-					mappanel.playerOnStart();
-					
-					while(true)
-					if (!mappanel.movePlayer(released))
-					{
-						sound.stop();
-						sound1.stop();
-						exit=true;
-						eg = new EndGame(time, timerLabel.getTime()); 
-						eg.setDefaultCloseOperation(EXIT_ON_CLOSE);
-					    eg.setLocation((Menu.ScreenSize.width-eg.getWidth())/2, (Menu.ScreenSize.height-eg.getHeight())/2);
-					    eg.setVisible(true);
-					    setVisible(false);
-						dispose();	
-						pause();
-						
-					}
-				}
-		    });
-			
-			
-			System.out.println(time);
-			timerLabel.setTime(time);;
-			
-			timerLabel.setFont(new Font(timerLabel.getFont().getFontName(), timerLabel.getFont().getStyle(), 20));
-			timerLabel.setText("Осталось время - " + String.format("%02d:%02d", time/100, time%100));
-			
-			mappanel.playerOnStart();
-			mappanel.repaint();
-			
-			
-			checkLose = new Thread(new Runnable()
-			{
-				public void run()
-				{
-					try {
-						Thread.sleep(time*10);
-					} catch (InterruptedException e) {}
-					if(!exit)
-					{
-					lose();
-					timerLabel.stop();
-					}
-				}
-			}
-			);
-			synchronized(this)
-			{
-			this.notify();
-			}
-			
-		}*/
 		
 		public void startMusic()
 		{
@@ -366,6 +314,7 @@ public class Game extends JFrame implements KeyListener{
 		public void lose()
 		{
 			setVisible(false);
+			
 			sound.stop();
 			sound1.stop();
 			exit=true;
@@ -374,14 +323,11 @@ public class Game extends JFrame implements KeyListener{
 			eg = new EndGame(wall1,path1); 
 			eg.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		    eg.setLocation((Menu.ScreenSize.width-eg.getWidth())/2, (Menu.ScreenSize.height-eg.getHeight())/2);
+		    eg.setResizable(false);
 		    eg.setVisible(true);
 		    
 		}
 		
-		public static boolean getExit()
-		{
-			return exit;
-		}
 		
 
 	}

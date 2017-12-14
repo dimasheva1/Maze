@@ -17,16 +17,14 @@ public class EndGame extends JFrame implements ActionListener{
 	
 	public EndGame(int time, int time1) 
 	{
-		//if (checkWin)
-		//{
 		setSize(200, 180);
 		this.setTitle("You Win");
-		winOrlose = new JLabel("You are Win!!!");
+		winOrlose = new JLabel("Вы выиграли!!!");
 		JLabel win1 = new JLabel("Ваше время - " + String.format("%02d:%02d", (time-time1) / 100, (time-time1) % 100));
 		JLabel win2 = new JLabel("Время на уровень - " + String.format("%02d:%02d", time / 100, time % 100));
-		choose = new JLabel("Choose action:");
-		nextLevel = new JButton("Go next level");
-		backToMenu = new JButton("Back to menu");
+		choose = new JLabel("Выберите действие:");
+		nextLevel = new JButton("Следующий уровень");
+		backToMenu = new JButton("Назад в меню");
 		setLayout(new FlowLayout());
 		
 		add(winOrlose);
@@ -38,8 +36,6 @@ public class EndGame extends JFrame implements ActionListener{
 		
 		nextLevel.addActionListener(this);
 		backToMenu.addActionListener(this);
-		//}
-		//else
 		
 		
 		
@@ -48,14 +44,14 @@ public class EndGame extends JFrame implements ActionListener{
 	
 	public EndGame(File wall1,File path1)
 	{
-		setSize(200, 200);
+		setSize(180, 180);
 		//this.game=game;
 		this.setTitle("You Lose");
-		winOrlose = new JLabel("You are Lose =( =( =(");
-		choose = new JLabel("Choose action:     ");
-		nextLevel = new JButton("Go next level");
-		backToMenu = new JButton("Back to menu");
-		JButton restart = new JButton("Restart");
+		winOrlose = new JLabel("Вы проиграли =( =( =(");
+		choose = new JLabel("Выберите действие:     ");
+		nextLevel = new JButton("Следующий уровень");
+		backToMenu = new JButton("Назад в меню");
+		JButton restart = new JButton("Переиграть");
 		setLayout(new FlowLayout());
 		
 		add(winOrlose);
@@ -68,17 +64,14 @@ public class EndGame extends JFrame implements ActionListener{
 		backToMenu.addActionListener(this);
 		restart.addActionListener(this);
 		
-		//this.wall1=wall1;
-		//this.path1=path1;
 		
-		//game.prepareToStart();
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getActionCommand()=="Go next level")
+		if (e.getActionCommand()=="Следующий уровень")
 		{  
 			if (Menu.getPodMenu()!=null) podmenu = Menu.getPodMenu();
 			else {
@@ -93,7 +86,7 @@ public class EndGame extends JFrame implements ActionListener{
 		    this.setVisible(false);
 		    this.dispose();
 		}
-		if (e.getActionCommand()=="Back to menu")
+		if (e.getActionCommand()=="Назад в меню")
 		{
 			menu = new Menu();
 			menu.setSize(250,370);
@@ -104,13 +97,12 @@ public class EndGame extends JFrame implements ActionListener{
 			this.setVisible(false);
 			this.dispose();
 		}
-		if (e.getActionCommand()=="Restart")
+		if (e.getActionCommand()=="Переиграть")
 		{
 			game = new Game(Game.wall1,Game.path1);
 			game.setResizable(false);
 			game.setSize(game.getSize());
 			game.setDefaultCloseOperation(EXIT_ON_CLOSE);
-			game.setLocation((Menu.ScreenSize.width-game.getWidth())/2, (Menu.ScreenSize.height-game.getHeight())/2);
 			game.setVisible(true);
 			this.setVisible(false);
 			this.dispose();

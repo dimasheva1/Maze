@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 	
 private int posX;
 private int posY;
-private transient Image img;
+private Image img;
 private boolean goTo;
 private char flag;
 
@@ -46,13 +46,10 @@ public boolean getGoTo()
 	return goTo;
 }
 
-
-
 public void setGoTo(boolean goTo)
 {
 	this.goTo = goTo;
 }
-
 
 public Image getImg() {
 	return img;

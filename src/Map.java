@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -20,14 +21,12 @@ import javax.swing.JPanel;
 public class Map{
 	protected static final  int cellSize=16;
 	private Cell [][] list;
-	private volatile Cell p ;
-	String str;
-	Solver solve;
-	int k=0;
-	int size;
-	//int count;
-	//private static Image wall = new ImageIcon("bricks.png").getImage();
-	//private static Image path = new ImageIcon("planks.png").getImage();
+	private volatile Cell p ; 
+	private Solver solve;
+	private MapMaker mm;
+	private int k=0;
+	private int size;
+
 	
 	
 		
@@ -35,11 +34,11 @@ public class Map{
 	
 	public Map(int size)
 	{
-		MapMaker mm = new MapMaker(size,size);
+	    mm = new MapMaker(size,size);
 		mm.makeMaze();
 		list = mm.getMaze();
 		solve= new Solver(list);
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"),' ');
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("player.png"))),' ');
 		
 		
 	
@@ -49,7 +48,7 @@ public class Map{
 	{
 		readFile(wall,path);
 		solve= new Solver(list);
-		p = new Cell(findInput()*cellSize,0,true,new ImageIcon("img/player.png"),' ');
+		p = new Cell(findInput()*cellSize,0,true,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("player.png"))),' ');
 	}
 	
 	
@@ -59,25 +58,21 @@ public class Map{
 	
 	public void goRight() 
 	{
-		//if (ifCan(1))
 		p.setPosX(p.getPosX()+2);
 	}
 	
 	public void goLeft()
 	{
-		//if (ifCan(2))
 		p.setPosX(p.getPosX()-2);
 	}
 	
 	public void goUp()
 	{
-		//if (ifCan(3))
 		p.setPosY(p.getPosY()-2);
 	}
 	
 	public void goDown()
 	{
-		//if (ifCan(4))
 		p.setPosY(p.getPosY()+2);
 	}
 	
@@ -163,28 +158,19 @@ public class Map{
 		{
 			int posX=in.nextInt();
 			int posY=in.nextInt();
-			list[posX][posY]=new Wall(posX,posY);
+			list[posX][posY]=new Wall(posX,posY,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("bricks.png"))));
 		}
 		while(in1.hasNext())
 		{
 			int posX=in1.nextInt();
 			int posY=in1.nextInt();
-			list[posX][posY]=new Path(posX,posY);
+			list[posX][posY]=new Path(posX,posY,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("planks.png"))));
 		}
 		in.close();
 		in1.close();
 		} catch (FileNotFoundException e) {}
 	}
 	
-	public Cell[][] getList()
-	{
-		return list;
-	}
-	
-	public Cell getPlayer()
-	{
-		return p;
-	}
 	
 	public void paintMap(Graphics g)
 	{		
@@ -193,8 +179,8 @@ public class Map{
 				{
 					g.drawImage(list[i][j].getImg(),list[i][j].getPosX()*cellSize , list[i][j].getPosY()*cellSize, 16, 16, null);
 				}
-			g.drawImage(new ImageIcon("img/finish.png").getImage(), (findOutput())*cellSize, (list.length-1)*cellSize, null);
-			g.drawImage(new ImageIcon("img/start.png").getImage(), (findInput()+1)*cellSize, 0, null);
+			g.drawImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("finish.png")), (findOutput())*cellSize, (list.length-1)*cellSize, null);
+			g.drawImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("start.png")), (findInput()+1)*cellSize, 0, null);
 			
 			g.drawImage(p.getImg(),p.getPosX(),p.getPosY(),16,16,null);
 	}
@@ -234,14 +220,7 @@ public class Map{
 				} catch (InterruptedException e) {}
 				
 				}
-			synchronized(Thread.currentThread())
-			{
-			if (Game.getExit()) 
-				{try {
-					Thread.currentThread().wait();
-			     	} catch (InterruptedException e) {}
-				}
-			}
+			
 			
 			}
 			catch (ArrayIndexOutOfBoundsException e) {} 
@@ -251,26 +230,12 @@ public class Map{
 		  
 		}
     
-    public void setK(int k)
+    public void setK(int k)  // указание напрвления движения
     {
     	this.k=k;
     }
 		
 		
-	
-    
-    public  void notifyPlayer()
-    {
-    	synchronized(Thread.currentThread())
-    	{
-    	Thread.currentThread().notify();}
-    }
-    
-    public void playerOnStart()
-    {
-    	p.setPosX(findInput()*cellSize);
-    	p.setPosY(0);
-    }
 	
     public int getSizeMap()//число передаваемое в мапмейкер
 	{

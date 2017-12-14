@@ -1,25 +1,30 @@
 
+import java.awt.Toolkit;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 
 
 public class MapMaker {
 
 	
-    static final int  UNDETERMINED = -2;
-    static final int  SET_WALL = -1;
+    private static final int  UNDETERMINED = -2;  //непонятные
+    private static final int  SET_WALL = -1;
+    private ImageIcon img = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("bricks.png")));
+    private ImageIcon img1 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("planks.png")));
 
-    int       rows;           //строки    
-    int       cols;           //столбцы
+    private int       rows;           //строки    
+    private int       cols;           //столбцы
 
-    int       act_rows;       //Текущий номер строки
-    int       act_cols;       //Текущий номер столбца
+    private int       act_rows;       //Текущий номер строки
+    private int       act_cols;       //Текущий номер столбца
 
-    Cell[][]  feild;          //Поле лабиринта
+    private Cell[][]  feild;          //Поле лабиринта
 
-    int[]     current;        //текущая строка, за исключением наружных стен
-    int[]     next;           //следующая строка, за исключением наружных стен
+    private int[]     current;        //текущая строка, за исключением наружных стен
+    private int[]     next;           //следующая строка, за исключением наружных стен
 
-    int       numSet;         //Проверка на совпадение
+    private int       numSet;         //Проверка на совпадение
         private Random fRand;
         private int fNext;
         private int fNext2;
@@ -28,6 +33,7 @@ public class MapMaker {
     {
     	MapMaker a = new MapMaker(10,10);
     	a.makeMaze();
+    
     	
     }
         
@@ -55,7 +61,7 @@ public class MapMaker {
         /* Sets the maze to filled */
         for(int i =0; i<feild[0].length; i++){
             for(int j=0; j<feild.length; j++){
-                feild[i][j] = new Wall(i,j);
+                feild[i][j] = new Wall(i,j,img);
             }
         }
 
@@ -114,13 +120,13 @@ public class MapMaker {
             for(int k=0; k<current.length; k++){
 
                 if(current[k] == SET_WALL){
-                    feild[2*q+1][k+1] = new Wall(2*q+1,k+1);
-                    feild[2*q+2][k+1] = new Wall(2*q+2,k+1);
+                    feild[2*q+1][k+1] = new Wall(2*q+1,k+1,img);
+                    feild[2*q+2][k+1] = new Wall(2*q+2,k+1,img);
                 }else{
-                    feild[2*q+1][k+1] = new Path(2*q+1,k+1);
+                    feild[2*q+1][k+1] = new Path(2*q+1,k+1,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("planks.png"))));
 
                     if(current[k] == next[k]){
-                        feild[2*q+2][k+1] = new Path(2*q+2,k+1);
+                        feild[2*q+2][k+1] = new Path(2*q+2,k+1,new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("planks.png"))));
                     }
                 }
 
@@ -245,9 +251,9 @@ public class MapMaker {
         for(int k=0; k<current.length; k++){
 
             if(current[k] == SET_WALL){
-                feild[rows-2][k+1] = new Wall(rows-2,k+1);
+                feild[rows-2][k+1] = new Wall(rows-2,k+1,img);
             }else{
-                feild[rows-2][k+1] = new Path(rows-2,k+1);
+                feild[rows-2][k+1] = new Path(rows-2,k+1,img1);
             }
         }
 
@@ -261,19 +267,22 @@ public class MapMaker {
         //случайное место для входа и выхода
         int entrance_row = rand.nextInt(act_rows-1) * 2 +1;
         int exit_row = rand2.nextInt(act_rows-1) * 2 +1;
-
-        //очистить место
-        feild[entrance_row][0] = new Path(entrance_row,0);
-        feild[exit_row][cols-1] = new Path(exit_row,cols-1);;
+        do {
+        	if (feild[entrance_row][1].getGoTo())
+        		feild[entrance_row][0] = new Path(entrance_row,0,img1);
+        	else entrance_row = rand.nextInt(act_rows-1) * 2 +1;
+        }
+        while(feild[entrance_row][1].getGoTo()!=true);
+        	do {
+        	if (feild[exit_row][cols-2].getGoTo())
+        		feild[exit_row][cols-1] = new Path(exit_row,cols-1,img1);
+            else entrance_row = rand.nextInt(act_rows-1) * 2 +1;
+        	}
+                while(feild[exit_row][cols-2].getGoTo()!=true);
+        
 
     }
     
-    /*public int findInput()
-    {
-    	for (int i =0;i<rows;i++)
-    		if (feild[i][0].getGoTo()==true) return i;
-    	return 0;
-    }*/
 
     
     public Cell[][] getMaze()

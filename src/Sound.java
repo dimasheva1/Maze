@@ -1,6 +1,8 @@
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -17,9 +19,10 @@ public class Sound {
 	private FloatControl volumeC = null;
 	private boolean playing = false;
 	
-	public Sound(File f) {
+	public Sound(InputStream f) {
 		try {
-			AudioInputStream stream = AudioSystem.getAudioInputStream(f);
+			InputStream bufferedIn = new BufferedInputStream(f);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
 			clip = AudioSystem.getClip();
 			clip.open(stream);
 			clip.addLineListener(new Listener());
@@ -104,13 +107,7 @@ public class Sound {
 		}
 	}
 	
-	//Статический метод, для удобства
-	public static Sound playSound(String s) {
-		File f = new File(s);
-		Sound snd = new Sound(f);
-		snd.play();
-		return snd;
-	}
+
 
 	private class Listener implements LineListener {
 		public void update(LineEvent ev) {

@@ -1,14 +1,14 @@
 
 import java.util.*;
 public class Solver {
-    Cell[][] maze;  //Двумерный массив для представления лабиринта
+	private Cell[][] maze;  //Двумерный массив для представления лабиринта
 
-    ArrayDeque<Integer[]> path;  //стек используется для отслеживания местоположения
+	private ArrayDeque<Integer[]> path;  //стек используется для отслеживания местоположения
 
-    int rows;  //Строки
-    int cols;  //Столбцы
+	private int rows;  //Строки
+	private int cols;  //Столбцы
     
-    int kol=0;
+	private int kol=0;
 
 
     public Solver(Cell[][] feild)
@@ -357,7 +357,7 @@ public class Solver {
         return maze;
     }
 
-    public void printSolution()
+    /*public void printSolution()
     {
         for(int i=0; i<rows; i++){
             for(int j=0; j<cols; j++){
@@ -365,13 +365,13 @@ public class Solver {
             }
             System.out.println();
         }
-    }
+    }*/
     
     public int getKolCell()
     {
     	return kol;
     }
-    public static void main(String [] args)
+   /* public static void main(String [] args)
     {
     	MapMaker a = new MapMaker(10,10);
     	a.makeMaze();
@@ -380,5 +380,5 @@ public class Solver {
     	b.printSolution();
     	System.out.println(b.getKolCell());
     	
-    }
+    }*/
 }

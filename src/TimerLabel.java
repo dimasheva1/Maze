@@ -47,7 +47,7 @@ private boolean flag = false;
 			public void run ()
 			{
 				int t = time;
-				TimerLabel.this.setText("Осталось время - " + String.format("%02d:%02d", t / 100, t % 100));
+				TimerLabel.this.setText("Осталось времени - " + String.format("%02d:%02d", t / 100, t % 100));
 			}
 		};
 		
@@ -64,14 +64,4 @@ private boolean flag = false;
 	};
 	
 	
-	/*public static void main (String[] args)
-	{
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JLabel timerLabel = new TimerLabel(new Timer());
-		timerLabel.setFont(new Font(timerLabel.getFont().getFontName(), timerLabel.getFont().getStyle(), 36));
-		frame.add(timerLabel);
-		frame.pack();
-		frame.setVisible(true);
-	}*/
 }

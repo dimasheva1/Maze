@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,18 +24,18 @@ public class PodMenu extends JFrame{
 		ChoosePanel=new JPanel();
 		panel=new JPanel();
 		
-		easy = new JButton("Easy",new ImageIcon("img/easy.png"));
-		medium = new JButton("Medium",new ImageIcon("img/medium.png"));
-		hard = new JButton("Hard",new ImageIcon("img/hard.png"));
-		back = new JButton("Back");
+		easy = new JButton("Легко",new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("easy.png"))));
+		medium = new JButton("Средне",new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("medium.png"))));
+		hard = new JButton("Сложно",new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("hard.png"))));
+		back = new JButton("Назад");
 		
 		easy.setAlignmentX(Component.CENTER_ALIGNMENT);
 		hard.setAlignmentX(Component.CENTER_ALIGNMENT);
 		back.setAlignmentX(Component.CENTER_ALIGNMENT);
 		medium.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		choose=new JLabel("Choose complexity:");
-		choose.setFont(new Font("Dialog", Font.ITALIC, 20));
+		choose=new JLabel("Выберите сложность:");
+		choose.setFont(new Font("Dialog", Font.ITALIC, 16));
 		choose.setHorizontalAlignment(getWidth()/2);
 		panel.add(choose);
 		
